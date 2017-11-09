@@ -1,0 +1,8 @@
+test:
+  override:
+    - "true"
+deployment:
+  production:
+    branch: master
+    commands:
+      - "rsync -avzHP --delete ./2017LingHolidayPartySurveyResults/ -e ssh adamliter@l1node.adamliter.org:/srv/shiny-server/2017lingholidaypartysurveyresults"

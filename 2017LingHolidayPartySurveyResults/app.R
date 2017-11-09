@@ -23,7 +23,7 @@ server <- function(input, output) {
                `Saturday, December 9` = ifelse(grepl("December 9", data[[2]]), 1, 0),
                `Monday, December 11` = ifelse(grepl("December 11", data[[2]]), 1, 0))
 
-    comments <- data.frame(Considerations = data[[3]][!is.na(data[[3]])],
+    comments <- data.frame(considerations = data[[3]][!is.na(data[[3]])],
                            stringsAsFactors = FALSE)
 
     data_sum <- data %>%
