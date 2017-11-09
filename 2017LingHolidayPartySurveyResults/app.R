@@ -9,6 +9,8 @@ ui <- fluidPage(
        hr(),
        DT::dataTableOutput("resultsTable"),
        br(),
+       DT::dataTableOutput("oneOnlyTable"),
+       br(),
        DT::dataTableOutput("considerationsTable")
        )
 )
@@ -36,6 +38,17 @@ server <- function(input, output) {
                    count = .,
                    row.names = NULL)
 
+    data_one_only <- data %>%
+        select(`Thursday, December 7`,
+               `Friday, December 8`,
+               `Saturday, December 9`,
+               `Monday, December 11`) %>%
+        filter(rowSums(.) == 1) %>%
+        colSums() %>%
+        data.frame(date = attr(., "names"),
+                   count = .,
+                   row.names = NULL)
+
    output$resultsTable <- DT::renderDataTable({data_sum},
                                               server = FALSE,
                                               rownames = FALSE,
@@ -44,6 +57,13 @@ server <- function(input, output) {
                                               caption = paste0("Number of people who would attend on each date (n=",
                                                                nrow(data),
                                                                ")"))
+
+   output$oneOnlyTable <- DT::renderDataTable({data_one_only},
+                                              server = FALSE,
+                                              rownames = FALSE,
+                                              extensions = c("ColReorder", "Responsive"),
+                                              options = list(dom = "t"),
+                                              caption = "Number of people who would only attend on the indicated day")
 
    output$considerationsTable <- DT::renderDataTable({comments},
                                                      server = FALSE,
